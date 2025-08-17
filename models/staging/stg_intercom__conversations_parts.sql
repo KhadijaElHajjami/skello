@@ -1,0 +1,50 @@
+{{ config(materialized='table', schema='stg') }}
+
+with raw as (
+  select
+    CONVERSATION_ID,
+    CONVERSATION_CREATED_AT,
+    CONVERSATION_UPDATED_AT,
+    CREATED_AT,
+    UPDATED_AT,
+    NOTIFIED_AT,
+    PART_GROUP,
+    "TYPE",
+    ID,
+    AUTHOR,               -- pris ici uniquement pour le parsing
+    _SDC_BATCHED_AT,
+    _SDC_EXTRACTED_AT,
+    _SDC_RECEIVED_AT,
+    _SDC_SEQUENCE,
+    _SDC_TABLE_VERSION
+  from CONVERSATIONS_PARTS_TABLE
+),
+
+parsed as (
+  select
+    r.*,
+    try_parse_json(r.AUTHOR) as author_json
+  from raw r
+)
+
+select
+  CONVERSATION_ID,
+  CONVERSATION_CREATED_AT,
+  CONVERSATION_UPDATED_AT,
+  CREATED_AT,
+  UPDATED_AT,
+  NOTIFIED_AT,
+  PART_GROUP,
+  "TYPE",
+  ID,
+  _SDC_BATCHED_AT,
+  _SDC_EXTRACTED_AT,
+  _SDC_RECEIVED_AT,
+  _SDC_SEQUENCE,
+  _SDC_TABLE_VERSION,
+
+  -- Parse AUTHOR -> author_id, author_type
+  try_to_number(author_json:id::string)  as author_id,
+  author_json:type::string               as author_type
+
+from parsed
