@@ -2,8 +2,9 @@
 version: 2
 
 models:
-    - name: my_first_dbt_model
-      description: "A starter dbt model"
+
+    - name: stg_intercom__conversations
+      description: "skello premiere table"
       columns:
           - name: id
             description: "The primary key for this table"
@@ -11,8 +12,8 @@ models:
                 - unique
                 - not_null
 
-    - name: my_second_dbt_model
-      description: "A starter dbt model"
+    - name: stg_intercom__conversations_parts
+      description: "skello deuxieme table"
       columns:
           - name: id
             description: "The primary key for this table"

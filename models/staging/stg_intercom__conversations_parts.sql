@@ -25,8 +25,13 @@ parsed as (
     r.*,
     try_parse_json(r.AUTHOR) as author_json
   from raw r
+),
+-- on filtre uniquement les ID qui sont bien numériques
+cleaned as (
+    select *
+    from parsed
+    where try_to_number(ID) is not null
 )
-
 select
   CONVERSATION_ID,
   CONVERSATION_CREATED_AT,
@@ -36,7 +41,7 @@ select
   NOTIFIED_AT,
   PART_GROUP,
   "TYPE",
-  ID,
+  try_to_number(c.ID) as ID,
   _SDC_BATCHED_AT,
   _SDC_EXTRACTED_AT,
   _SDC_RECEIVED_AT,
@@ -47,4 +52,5 @@ select
   try_to_number(author_json:id::string)  as author_id,
   author_json:type::string               as author_type
 
-from parsed
+from cleaned c
+where author_type != 'bot'   --  exclusion des bots
