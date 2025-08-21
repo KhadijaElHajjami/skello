@@ -12,7 +12,7 @@ localized as (
     -- Si tes timestamps sont en UTC, convertis en heure locale :
     convert_timezone('UTC','Europe/Paris', conversation_start_at) as local_start_at
   from first_user_message
-),  -- <<< VIRGULE ICI
+), 
 
 support_only as (
   select l.conversation_id, l.local_start_at

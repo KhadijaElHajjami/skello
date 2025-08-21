@@ -11,7 +11,7 @@ with raw as (
     PART_GROUP,
     "TYPE",
     ID,
-    AUTHOR,               -- pris ici uniquement pour le parsing
+    AUTHOR,               -- il faut faire parsing
     _SDC_BATCHED_AT,
     _SDC_EXTRACTED_AT,
     _SDC_RECEIVED_AT,
@@ -26,7 +26,7 @@ parsed as (
     try_parse_json(r.AUTHOR) as author_json
   from raw r
 ),
--- on filtre uniquement les ID qui sont bien numériques
+-- on filtre uniquement les ID qui sont de type num.
 cleaned as (
     select *
     from parsed
@@ -53,4 +53,4 @@ select
   author_json:type::string               as author_type
 
 from cleaned c
-where author_type != 'bot'   --  exclusion des bots
+where author_type != 'bot'   --  exclure les bots

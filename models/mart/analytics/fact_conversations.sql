@@ -1,4 +1,4 @@
--- grain : 1 ligne = 1 conversation
+
 select
   ID                       as conversation_id,
   CREATED_AT               as created_at,

@@ -16,9 +16,9 @@ parsed as (
   select
     try_to_number(ID) as numeric_id,
     r.*,
-    try_parse_json(replace(ASSIGNEE,'""','"'))                   as assignee_json,
+    try_parse_json(replace(ASSIGNEE,'""','"')) as assignee_json,
     try_parse_json(replace(CONVERSATION_RATING_RATING,'""','"')) as rating_json,
-    try_parse_json(replace(TAGS,'""','"'))                       as tags_json
+    try_parse_json(replace(TAGS,'""','"')) as tags_json
   from raw r
 ),
 
@@ -49,4 +49,4 @@ select
   t.tags_concat
 from parsed p
 left join tags_agg t
-  on t.numeric_id = p.numeric_id
+  on t.numeric_id = p.numeric_id -- Left afin de garder les convers. sans tags
