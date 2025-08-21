@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: fact_conversations
+    columns:
+      - name: conversation_id
+        tests: [not_null, unique]
+
+  - name: dim_agent
+    columns:
+      - name: agent_id
+        tests: [not_null, unique]
